@@ -1,0 +1,96 @@
+<html>
+
+<head>
+    <style>
+        body {
+            font-size: 10pt;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 110px;
+        }
+
+        .innercontainer {
+            display: grid;
+            grid-template-rows: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .box {
+            border: 3px solid #666;
+            background-color: #ddd;
+            border-radius: .5em;
+            padding: 10px;
+            cursor: move;
+        }
+
+        .answerbox {
+            background-color: #bbb;
+            border-radius: .5em;
+            padding: 10px;
+            cursor: move;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Schleifen Übung</h1>
+    <img src="./img/drawing.svg" width="50%" alt="Dino Spielbrett">
+    <p>Tobi der Dino will drei Äpfel nehmen und mit zu seiner Höhle nehmen. Was muss Tobi genau machen? </br>
+        Wie kannst du den Ablauf in 4 Zeilen beschreiben? </p>
+
+    <div class="container">
+        <div class="innercontainer">
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag1">for</div>
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag2">nimm Apfel</div>
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag3">gehe vor</div>
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag4">gehe zurück</div>
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag5">for</div>
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag6">2</div>
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag7">3</div>
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag8">4</div>
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag9">5</div>
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag10">6</div>
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag11">7</div>
+        </div>
+        <div class="innercontainer">
+            <div draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            <div draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            <div draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            <div draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
+    </div>
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+
+        function handleDragStart(e) {
+            this.style.opacity = '0.6';
+        }
+        function handleDragEnd(e) {
+            this.style.opacity = '1';
+        }
+
+
+        let items = document.querySelectorAll('.container .box');
+        items.forEach(function (item) {
+            item.addEventListener('dragstart', handleDragStart);
+            item.addEventListener('dragend', handleDragEnd);
+        });
+    </script>
+</body>
+
+</html>
