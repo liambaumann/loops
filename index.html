@@ -7,10 +7,12 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+
         .container {
+            padding-right: 50%;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 110px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 80px;
         }
 
         .innercontainer {
@@ -33,6 +35,17 @@
             padding: 10px;
             cursor: move;
         }
+        
+        @media only screen and (max-width: 900px) {
+            body {
+                background-color: lightblue;
+            }
+
+            .container {
+                padding-right: 0%;
+                gap: 10px;
+            }
+        }
     </style>
 </head>
 
@@ -44,7 +57,8 @@
 
     <div class="container">
         <div class="innercontainer">
-            <div draggable="true" ondragstart="drag(event)" class="box" id="drag1">for</div>
+            <div draggable="true" ondragstart="drag(event)" class="box" id="drag1">for <input type="text" id="how-many"
+                    class="wheelable" value="1" name="how-many" /></div>
             <div draggable="true" ondragstart="drag(event)" class="box" id="drag2">nimm Apfel</div>
             <div draggable="true" ondragstart="drag(event)" class="box" id="drag3">gehe vor</div>
             <div draggable="true" ondragstart="drag(event)" class="box" id="drag4">gehe zurück</div>
@@ -57,12 +71,20 @@
             <div draggable="true" ondragstart="drag(event)" class="box" id="drag11">7</div>
         </div>
         <div class="innercontainer">
-            <div draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-            <div draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-            <div draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-            <div draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            <div id="line1" draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)">
+            </div>
+            <div id="line2" draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)">
+            </div>
+            <div id="line3" draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)">
+            </div>
+            <div id="line4" draggable="false" class="answerbox" ondrop="drop(event)" ondragover="allowDrop(event)">
+            </div>
+
+            <button id="check">Check answer</button>
+            <p id="result"> Result here </p>
         </div>
     </div>
+
     <script>
         function allowDrop(ev) {
             ev.preventDefault();
@@ -84,7 +106,33 @@
             this.style.opacity = '1';
         }
 
+        function printResult(e) {
+            results = "";
+            //number of answer boxes
+            let numberOfBoxes = 4;
+            //check all answer boxes for answer(text)
+            for (let i = 1; i < numberOfBoxes + 1; i++) {
+                //if input is undefined, there is probably just plain text
+                console.log("i = " + i);
+                console.log("input = " + document.querySelector("#line" + i + " div input"));
+                if (document.querySelector("#line" + i + " div input") == null) {
+                    results += document.querySelector("#line" + i + " div").innerHTML;
+                    console.log("inside if")
+                    //if not however, there is an input field inside which needs to be processed.
+                } else {
+                    //for now this only happenes with for boxes
+                    console.log("test" + "for" + document.querySelector("#line" + i + " div input").value);
 
+                    results += "for" + document.querySelector("#line" + i + " div input").value;
+                    console.log("inside else");
+                }
+            }
+            document.getElementById("result").innerHTML = results;
+        }
+
+        document.getElementById('check').addEventListener("click", printResult);
+
+        let results = [];
         let items = document.querySelectorAll('.container .box');
         items.forEach(function (item) {
             item.addEventListener('dragstart', handleDragStart);
